@@ -43,8 +43,48 @@ Visual Studio Code에서 Go Extension을 설치하면, Go 프로그래밍 편집
 
 2. VS Code에 Go Extension을 설치한다. Extension 설치를 위해서는 VS Code에서 View -> Command Palette를 선택하고, ext install 이라고 치고 "Extensions: Install Extension"을 선택한다. 이후 계속 go 를 치고, 아래 화면처럼 lukehoban의 "Rich Go language support for VSC" 에서 다운로드 아이콘을 눌러 Extension을 설치한다. 설치 완료후 VS Code를 종료한다.
 
-3. Go 작업폴더를 생성하고, GOPATH 환경변수에 이 폴더로 지정한다. Go 작업폴더는 일반적으로 bin, pkg, src 라는 3개의 서브디렉토리를 갖는다.
+3. Go 작업폴더를 생성하고, GOPATH 환경변수에 이 폴더로 지정한다. Go 작업폴더는 일반적으로 bin, pkg, src 라는 3개의 서브디렉토리를 갖는다.  
+```
+GOPATH로 설정된 경로로 들어가서 bin, pkg, src 3개의 폴더를 생성한다.
+- bin : go 에서 사용하는 명령어 저장
+- pkg : go get 명령어로 다운 받은 패키지 저장
+- src : go 파일 소스  
+```  
 
-4. VS Code를 실행한다. File -> Open Folder를 선택하고 Go 작업폴더를 연다. src 폴더에 새 test.go 파일을 만든다. go 파일이 만들어 지면, 화면하단에 아래와 같이 Analysis Tools Missing 링크가 표시되는데, 이를 클릭한다. 클릭하면, 상단에 Go analysis tools 설치 메시지가 뜨고 이를 설치한다.
+4. VS Code를 실행한다. File -> Open Folder를 선택하고 Go 작업폴더를 연다. src 폴더에 새 test.go 파일을 만든다. go 파일이 만들어 지면, 화면하단에 아래와 같이 Analysis Tools Missing 링크가 표시되는데, 이를 클릭한다. 클릭하면, 상단에 Go analysis tools 설치 메시지가 뜨고 이를 설치한다.  
+```
+// main.go
 
-5. 툴이 설치되면 Go 언어에 대해 인텔리센스와 키워드 컬러링이 제공된다.
+package main
+ 
+import (
+    "fmt"
+)
+ 
+func main() {
+    fmt.Println("hello world")
+}
+```  
+작성해서 F5눌러서 디버그 콘솔에서 결과를 확인한다.  
+
+5. 툴이 설치되면 Go 언어에 대해 인텔리센스와 키워드 컬러링이 제공된다.  
+
+### 추가 설치  
+아래의 명령어를 명령 프로픔트 창에 실행한다.  
+To install the tools manually in the current GOPATH, just paste and run: [출처](https://github.com/Microsoft/vscode-go)  
+```
+go get -u -v github.com/nsf/gocode
+go get -u -v github.com/rogpeppe/godef
+go get -u -v github.com/zmb3/gogetdoc
+go get -u -v github.com/golang/lint/golint
+go get -u -v github.com/lukehoban/go-outline
+go get -u -v sourcegraph.com/sqs/goreturns
+go get -u -v golang.org/x/tools/cmd/gorename
+go get -u -v github.com/tpng/gopkgs
+go get -u -v github.com/newhook/go-symbols
+go get -u -v golang.org/x/tools/cmd/guru
+go get -u -v github.com/cweill/gotests/...
+go get -u -v golang.org/x/tools/cmd/godoc
+go get -u -v github.com/fatih/gomodifytags
+go get github.com/derekparker/delve/cmd/dlv // 얘는 go 디버거
+```
