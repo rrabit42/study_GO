@@ -5,34 +5,21 @@ import (
 	"strings"
 )
 
-// return 값의 type을 {} 앞에다가 요롷게. 이 type이 없으면 go는 return값으로 아무것도 주지 않는다고 생각.
-// func multiply(a int, b int) int {}
-// 인자들이 모두 같은 타입이면 이렇게도 가능
-func multiply(a, b int) int {
-	return a * b
-}
+// naked return : return할 variable을 굳이 꼭 명시하지 않아도 됨
+// return type과 함께 변수명도 같이 정의해 주는 것!
+// 무엇이 리턴되는지 정확히 알 수 있음
+func lenAndUpper(name string) (length int, uppercase string) {
+	// return 후에 작업을 시키고 싶을 때는
+	// defer를 쓴다. 'defer'은 function 값이 return하고 나면 실행됨
+	defer fmt.Println("I'm done")
 
-// go의 func은 multiple return이 가능하다.
-func lenAndUpper(name string) (int, string) {
-	return len(name), strings.ToUpper(name)
-}
-
-// 원하는 만큼의 arguments를 전달받는 법
-func repeatMe(words ...string) {
-	fmt.Println(words) // array 형태로 출력
+	length = len(name) // update, not create 때문에 :=를 쓰는게 아님
+	uppercase = strings.ToUpper(name)
+	return
+	// return length, uppercase 이렇게 해도 당연히 작동하지만, 굳이 작성하지 않아도 됨
 }
 
 func main() {
-	fmt.Println(multiply(2, 2))
-
-	totalLength, upperName := lenAndUpper("nico") // 참고로 go는 무언가를 만들고 쓰지 않으면 에러 발생
-
-	// return 개수에 맞게 변수 줘야함. if not 에러
-	// totalLen := lenAndUpper("sy") => X
-	totalLen, _ := lenAndUpper("sy") // 이런식으로 작성하면 value 값을 무시하는 것(ignored value). 컴파일러가 쳐다보지도 않고 무시
-
-	repeatMe("nico", "lynn", "dal", "marl", "flynn")
-
-	fmt.Println(totalLength, upperName)
-	fmt.Println(totalLen)
+	totalLength, up := lenAndUpper("nico") // 즉 여기 function이 끝나면 defer가 실행됨
+	fmt.Println(totalLength, up)           // 그 후에 출력!
 }
