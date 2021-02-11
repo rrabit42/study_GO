@@ -3,15 +3,19 @@ package main
 import "fmt"
 
 func main() {
-	// array
-	// names := [5]string{"nico", "lynn", "dal"}
-	// names[3] = "alala"
-	// fmt.Println(names)
-	// 이 상태로도 출력은 됨.
+	// map은 key와 value로 이루어진 데이터
+	// [key] 는 string이고 value{} 도 string이다
+	nico := map[string]string{
+		"name": "nico",
+		// "age": 12 -> string, string이라고 선언했기에 쓸 수 없음 => object와 다른 부분
+		"age": "12",
+	}
+	fmt.Println(nico)
 
-	// slice : 데이터 타입 중 하나, 기본적으로 array 인데 length 없이 사용하는 것
-	// 요소 추가, 삭제가 자유로움. 추가할 때 array처럼 index로 지정이 불가하니 append(slice, value) 이용
-	names := []string{"nico", "lynn", "dal"}
-	names = append(names, "flynn") // append는 modify가 아님. 새로운 값이 추가된 slice를 return함
-	fmt.Println(names)
+	// map도 range를 통해 다룰 수 있다.
+	for key, value := range nico {
+		fmt.Println(key, value)
+	}
+
+	// map에 데이터 추가, 검색 등 여러 함수가 있지만 coming soon
 }
