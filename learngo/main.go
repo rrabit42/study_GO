@@ -2,20 +2,25 @@ package main
 
 import "fmt"
 
+type person struct {
+	name    string
+	age     int
+	favFood []string // array
+	// method도 포함될 수 있음
+}
+
+/*
+	python 의 __init__
+	javascript의 constructor()
+	Go는 이런 constructor method는 없음!
+	struct는 constructor가 없기 때문에 우리 스스로 constructor를 실행해야 함. -> 나중에 연습할 것
+*/
+
 func main() {
-	// map은 key와 value로 이루어진 데이터
-	// [key] 는 string이고 value{} 도 string이다
-	nico := map[string]string{
-		"name": "nico",
-		// "age": 12 -> string, string이라고 선언했기에 쓸 수 없음 => object와 다른 부분
-		"age": "12",
-	}
+	favFood := []string{"kimchi", "ramen"}
+	// 이런 코드는 잘 쓰지 않음. 뭐가 뭔지 위에서 살펴봐야하기 때문
+	// nico := person{"nico", 18, favFood}
+	nico := person{name: "nico", age: 18, favFood: favFood}
 	fmt.Println(nico)
-
-	// map도 range를 통해 다룰 수 있다.
-	for key, value := range nico {
-		fmt.Println(key, value)
-	}
-
-	// map에 데이터 추가, 검색 등 여러 함수가 있지만 coming soon
+	fmt.Println(nico.age)
 }
