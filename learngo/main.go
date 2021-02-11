@@ -3,19 +3,39 @@ package main
 import "fmt"
 
 func canIDrint(age int) bool {
-	// GO에서는
-	// 0. ()가 굳이 필요 없음
-	// 1. if block은 return이 있으면 알아서 끝내줌. 즉 else가 필요 없음
-	// 2. if 조건을 체크하기 전에 여기에 variable을 만들 수 있음(if에 사용하기 위해 변수를 만들었구나 한눈에 알 수 있음)
-	if koreanAge := age + 2; koreanAge < 18 {
+	// 익히 알다시피, 아래와 같이 쓸 수도 있지만
+	// switch age {
+	// case 10:
+	// 	return false
+	// case 18:
+	// 	return true
+	// case 50:
+	// 	return false
+	// }
+
+	// 이렇게 아예 대놓고 if-else 대체로도 쓸 수 있음
+	// switch {
+	// case age < 10:
+	// 	return false
+	// case age == 18:
+	// 	return true
+	// case age > 50:
+	// 	return false
+	// }
+	// return false
+
+	// if-else처럼 variable을 만들 수도 있음
+	switch koreanAge := age + 2; koreanAge {
+	case 10:
+		return false
+	case 18:
+		return true
+	case 50:
 		return false
 	}
-	return true
-	// else {
-	// 	return true
-	// }
+	return false
 }
 
 func main() {
-	fmt.Println(canIDrint(16))
+	fmt.Println(canIDrint(18))
 }
