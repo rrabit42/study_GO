@@ -2,22 +2,20 @@ package main
 
 import "fmt"
 
-func superAdd(numbers ...int) int {
-	total := 0
-
-	// range : array에 loop을 적용할 수 있도록 해줌(for 안에서만 사용 가능)
-	for _, number := range numbers { // range는 index를 주기 때문에 이렇게 index를 첫번째로 받아줘야함(_ 하든지)
-		total += number
+func canIDrint(age int) bool {
+	// GO에서는
+	// 0. ()가 굳이 필요 없음
+	// 1. if block은 return이 있으면 알아서 끝내줌. 즉 else가 필요 없음
+	// 2. if 조건을 체크하기 전에 여기에 variable을 만들 수 있음(if에 사용하기 위해 변수를 만들었구나 한눈에 알 수 있음)
+	if koreanAge := age + 2; koreanAge < 18 {
+		return false
 	}
-	return total
-
-	// 당연히 이렇게도 가능!
-	// for i := 0; i < len(numbers); i++ {
-	// 	fmt.Println(numbers[i])
+	return true
+	// else {
+	// 	return true
 	// }
 }
 
 func main() {
-	result := superAdd(1, 2, 3, 4, 5, 6)
-	fmt.Println(result)
+	fmt.Println(canIDrint(16))
 }
