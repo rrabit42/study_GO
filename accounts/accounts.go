@@ -22,3 +22,16 @@ func NewAccount(owner string) *Account {
 	account := Account{owner: owner, balance: 0}
 	return &account // object 자체를 return, 복사하는걸 원하지 않아서!
 }
+
+// method: Account struct는 method를 가지게 됨
+// 보통 method의 receiver를 작성할 때, struct의 첫글자를 따서 소문자로 지음
+
+// Deposit X amount on your account
+func (a Account) Deposit(amount int) {
+	a.balance += amount
+}
+
+// Balance of your account
+func (a Account) Balance() int {
+	return a.balance
+}
