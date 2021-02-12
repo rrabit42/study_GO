@@ -1,6 +1,9 @@
 package accounts
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 // 컴파일을 하지 않을 거라 main function을 가지지 않음
 // main을 컴파일 할거고, main은 banking을 사용할 것
@@ -56,4 +59,20 @@ func (a *Account) Withdraw(amount int) error {
 	// error를 return 시켰으니 정상이어도 뭔가를 return해줘야함
 	// error도 2가지 value가 있는데 하나는 error, 하나는 nil(null, None 같은 것)
 	return nil
+}
+
+// Change Owner of the account
+func (a *Account) ChangeOwner(newOwner string) {
+	a.owner = newOwner
+}
+
+// Owner of the account
+func (a Account) Owner() string { // object가 너무 크면 복사본 만들지 말고 걍 pointer로 가져오렴
+	return a.owner
+}
+
+func (a Account) String() string {
+	// return "whatever you want"
+	// Sprint는 string 출력 함수
+	return fmt.Sprint(a.Owner(), "'s account.\nHas: ", a.Balance())
 }
