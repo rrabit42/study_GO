@@ -3,20 +3,48 @@ package main
 import (
 	"fmt"
 
-	"github.com/rrabit42/accounts"
+	"github.com/rrabit42/mydict"
 )
 
 func main() {
-	account := accounts.NewAccount("nico")
-	account.Deposit(10)
-	err := account.Withdraw(20)
+	dictionary := mydict.Dictionary{"first": "Firstword"}
 
-	// 고는 이렇게 항상 에러를 체크하도록 강제시킴(exception이 없으니까)
+	word := "hello"
+	definition := "Greeting"
+
+	err := dictionary.Add(word, definition)
 	if err != nil {
-		// Println()을 호출하고 프로그램을 종료시킴
-		// log.Fatalln(err)
 		fmt.Println(err)
 	}
-	fmt.Println(account.Balance(), account.Owner())
-	fmt.Println(account) // Go가 자동으로 struct에서 호출해주는 method가 있음(python의 __str__ 처럼) -> String method가 있음!
+
+	def, err := dictionary.Search(word)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println("found", word, "definition:", def)
+	}
+
+	err2 := dictionary.Add(word, definition)
+	if err2 != nil {
+		fmt.Println(err2)
+	}
+
+	err3 := dictionary.Update(word, "Second")
+	if err3 != nil {
+		fmt.Println(err3)
+	}
+	baseWord, _ := dictionary.Search(word)
+	fmt.Println(baseWord)
+
+	err4 := dictionary.Delete(word)
+	if err4 != nil {
+		fmt.Println(err4)
+	}
+
+	def, err5 := dictionary.Search(word)
+	if err5 != nil {
+		fmt.Println(err5)
+	} else {
+		fmt.Println("found", word, "definition:", def)
+	}
 }
