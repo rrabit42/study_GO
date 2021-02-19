@@ -1,26 +1,40 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+	"net/http"
+)
 
-type person struct {
-	name    string
-	age     int
-	favFood []string // array
-	// method도 포함될 수 있음
-}
-
-/*
-	python 의 __init__
-	javascript의 constructor()
-	Go는 이런 constructor method는 없음!
-	struct는 constructor가 없기 때문에 우리 스스로 constructor를 실행해야 함. -> 나중에 연습할 것
-*/
+var errRequestFailed = errors.New("Request failed")
 
 func main() {
-	favFood := []string{"kimchi", "ramen"}
-	// 이런 코드는 잘 쓰지 않음. 뭐가 뭔지 위에서 살펴봐야하기 때문
-	// nico := person{"nico", 18, favFood}
-	nico := person{name: "nico", age: 18, favFood: favFood}
-	fmt.Println(nico)
-	fmt.Println(nico.age)
+	urls := []string{
+		"https://www.airbnb.com/",
+		"https://www.google.com/",
+		"https://www.amazon.com/",
+		"https://www.reddit.com/",
+		"https://www.google.com/",
+		"https://soundcloud.com/",
+		"https://www.facebook.com/",
+		"https://www.instagram.com/",
+		"https://academy.nomadcoders.co/",
+	}
+	for _, url := range urls {
+		hitURL(url)
+	}
+}
+
+// 웹사이트 접속
+// go lang std library 이용
+func hitURL(url string) error {
+	// logger
+	fmt.Println("Checking:", url)
+
+	// request 보내고, response와 error 받기
+	resp, err := http.Get(url)
+	if err == nil || resp.StatusCode >= 400 {
+		return errRequestFailed
+	}
+	return nil
 }
