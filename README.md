@@ -2,7 +2,7 @@
 졸업프로젝트를 위한 공부😤  
 [노마드코더-GO 입문자](https://nomadcoders.co/go-for-beginners)  
 > GO한테 반하는 중
-> 1. 파이썬보다도 빠르고 간결함  
+> 1. 파이썬보다도 빠르고 간결함(multi-core processing, 병행성)  
 > 2. return 값을 여러 개, 다른 타입으로 줄 수 있음  
 > 3. naked return, if, switch에서 변수 선언 등 파이썬보다도 직관적인 언어인듯  
 > 4. 그동안 다른 개발 언어(C, C++ 제외)에 없어서 아쉬웠던 포인터까지 탑재...
