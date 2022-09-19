@@ -94,3 +94,124 @@ go get -u -v golang.org/x/tools/cmd/godoc
 go get -u -v github.com/fatih/gomodifytags
 go get github.com/derekparker/delve/cmd/dlv // 얘는 go 디버거
 ```
+
+### GO Modules  
+GO 1.11 버전부터 생김.  
+Go 모듈은 go 패키지들의 종속성을 관리하는 패키지 관리 시스템.  
+Go의 모듈 개념은 Go 어플리케이션 내의 종속성 문제를 처리하기 위해 도입.  
+모듈은 패키지를 트리 형식으로 저장하고 있으며, 루트 트리에는 go.mod 파일이 있다.  
+
+저장소, 모듈 및 패키지 간의 관계는 아래와 같다.  
+* 저장소에는 하나 이상의 Go 모듈이 포함됨.  
+* 각 모듈에는 하나 이상의 Go 패키지가 포함되어 있음.  
+* 각 패키지는 단일 디렉토리에 있는 하나 이상의 Go 소스 파일로 구성됨.  
+```
+repository
+|-- module1
+|   `-- package1
+|       `-- src1.go
+|       `-- src2.go
+|   `-- go.mod
+|   `-- package2
+|       `-- src.go
+|-- module2
+|   `-- package
+|       `--src.go
+|   `-- go.mod
+```
+
+사용할 프로젝트 폴더에서 아래의 명령어를 쓰게 되면 go.mod란 파일이 생긴다  
+```
+go mod 프로젝트명
+cd 프로젝트명
+cat go.mod
+# module github.com/내가작성한프로젝트명
+```
+
+### golang 모듈의 장점  
+* $GOPATH/src 디렉토리 바깥에 프로젝트 디렉토리를 만들 수 있음
+* vendor 디렉토리를 사용하지 않아도 됨
+* reproducible build (언제,어디서나,누구라도 항상 동일한 build 결과를 보장함)
+
+#### GO111MODULE 환경변수  
+모듈 동작은 **GO111MODULE** 환경변수에 의해 제어된다.  
+GO111MODULE은 on, off, auto(default)로 설정할 수 있다.  
+* off: 빌드 중에 $GOPATH에 있는 패키지 사용  
+* on: 빌드 중에 $GOPATH 대신 모듈에 있는 패키지 사용  
+* auto: 현재 디렉터리가 $GOPATH 외부에 있고 go.mod 파일이 포함된 경우 모듈을 사용하고, 그렇지 않으면 $GOPATH 패키지를 사용  
+
+아래의 명령어로 GO111MOUDLE 설정을 변경할 수 있다.  
+```go env -w GO111MODULE=on```  
+
+#### go.mod  
+go.mod는 모듈을 정의하고 종속성 정보를 저장하고 있는 파일.  
+이 파일을 통해 패키지들을 관리하게 된다.  
+
+모듈은 루트 디렉터리에 하나의 go.mod 파일을 갖고 있다.  
+go.mod는 네 가지 키워드 사용(module, require, replace, exclude)  
+```
+$ cat go.mod
+module github.com/my/thing
+
+go 1.15
+
+require (
+    github.com/some/dependency v1.2.3
+    github.com/another/dependency/v4 v4.0.0
+)
+```
+
+* module  
+module은 모듈 경로를 저장한다.  
+위에 go.mod 파일 예를 보면 첫번째 라인에 모듈의 경로를 나타내는 module 지시자가 선언되어 있다.  
+Go 소스 코드에서 패키지를 가져올 때, 절대 경로를 사용할 필요 없이 module에 선언되어 있는 모듈 경로를 사용하면 된다.  
+```import "github.com/my/thing/bar"```  
+예를 들어 모듈 안에 있는 bar 패키지를 가져온다면 위와 같이 선언해주면 된다.  
+
+* require  
+require 는 빌드 시 필요한 종속성 정보를 저장한다.
+모듈을 사용하여 빌드하면 자동으로 필요한 패키지를 다운로드 및 설치하고 require에 패키지 경로와 버전 정보가 추가된다.
+
+* replace  
+replace는 모듈의 특정 버전이나, 버전 전체를 대체할 때 사용한다.  
+require에 의해 설정된 종속성을, => 를 통해 우측에 설정된 패키지 버전으로 대체시킨다.  
+
+빌드시 우측에 설정된 패키지 버전을 사용하게 된다.  
+```replace example.com/some/dependency => example.com/some/dependency v1.2.3```  
+
+* exclude  
+exclude는 패키지의 특정 버전을 사용하지 않도록 할 때 사용한다.   
+
+```exclude example.com/some/dependency```  
+
+### go.sum
+go.sum 파일은 go.mod에 종속성 정보가 추가될 때 생성.  
+이 파일은 종속성 관리를 위한 암호화된 체크섬 정보를 저장하고 있고 각각의 체크섬을 확인하여 수정된 항목이 있는지 확인하는 데 사용.  
+```
+$ cat go.sum
+golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c h1:qgOY6WgZO...
+golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c/go.mod h1:Nq...
+rsc.io/quote v1.5.2 h1:w5fcysjrx7yqtD/aO+QwRjYZOKnaM9Uh2b40tElTs3...
+rsc.io/quote v1.5.2/go.mod h1:LzX7hefJvL54yjefDEDHNONDjII0t9xZLPX...
+rsc.io/sampler v1.3.0 h1:7uVkIFmeBqHfdjD+gZwtXXI+RODJ2Wc4O7MPEh/Q...
+rsc.io/sampler v1.3.0/go.mod h1:T1hPZKmBbMNahiBKFy5HrXp6adAjACjK9...
+```
+
+### module mirror  
+모듈을 다운로드 하는 서버  
+모듈의 소스레포가 죽었을 경우 (또는 폐기되었을 경우) 대비 (그런 경우에도 모듈 다운로드 보장)  
+go 명령이 디폴트 참조하는 미러 서버를 구글이 운영 (proxy.golang.org)  
+> 관련 명령 : go get, go build, ...  
+
+### check sum DB  
+모듈이 위/변조 되지 않았는지 확인하는 서버  
+go 명령이 디폴트 참조하는 첵썸 디비를 구글이 운영 (sum.golang.org)  
+관련 명령 : go get, gosumcheck, ...  
+
+> go.mod 파일과 go.sum 파일은 소스관리 대상
+
+#### 참고  
+https://ingeec.tistory.com/106  
+https://yoongrammer.tistory.com/33  
+
+
