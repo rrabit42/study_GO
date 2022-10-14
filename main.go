@@ -33,21 +33,34 @@ func main() {
 	// main은 (주로) 정보를 저장하는 곳이니까!
 
 	// Channel은 (goroutine-메인함수), (goroutine-다른 goroutine) 사이에 정보를 전달하기 위한 방법 -> go routine 사이 어떻게 커뮤니케이션할까에 대한 해답
-	c := make(chan bool) // 어떤 종류의 정보를 주고 받을건지 정의, main 함수 안에 있으니 main과 소통하기 위한 채널이 되겠다.
+	c := make(chan string) // 어떤 종류의 정보를 주고 받을건지 정의, main 함수 안에 있으니 main과 소통하기 위한 채널이 되겠다.
 	people := [2]string{"nico", "flynn"}
 	for _, person := range people {
 		// 값을 리턴하고 있다고 해서 아래와 같이 사용할 수는 없음
 		// result := go isSexy(person)
 		go isSexy(person, c)
 	}
-	// result := <-c    // time sleep이 없어도 main 함수가 기다림: 채널로부터 무언가를 받을 때 메인함수는 어떤 답이 올 때까지 기다림
-	fmt.Println(<-c) // 데이터 하나만 나옴, channel에는 2개 존재
-	fmt.Println(<-c) // 이렇게 쓸 수도 있다. routine 개수에 맞지 않게 channel에서 데이터 가져오려 하면 Deadlock 에러 남
+	fmt.Println("Waiting for messages")
+	// resultOne := <-c    // time sleep이 없어도 main 함수가 기다림: 채널로부터 무언가를 받을 때 메인함수는 어떤 답이 올 때까지 기다림
+	// resultTwo := <-c
+	// resultThree := <-c	// go는 컴파일 전에는 이걸 알아낼 수 없음. blocking operation이기 때문에 런타임에서 기다리면서 알아냄.
+	// 프로그램에는 남아 있는 goroutine이 없는데 하염없이 메세지를 기다린다면 프로그램은 안끝나고 뭐가 잘못됐는지도 모르는 지경이 될 수 있음.
+	// 그리고 개수만큼 계속 변수 할당에서 이렇게 쓸거야?!
+	// -> loop를 쓰자!
+
+	// 메인 함수는 아래 함수를 보자 멈출 것. 왜냐하면 이건 blocking operation 이기 때문, 이 작업이 끝날 때 까지 멈춘다는 뜻
+	fmt.Println("Received this message:", <-c) // 데이터 하나만 나옴, channel에는 2개 존재
+	// 다른 메세지 받을 때까지 또 기다림
+	fmt.Println("Received this message:", <-c) // 이렇게 쓸 수도 있다. routine 개수에 맞지 않게 channel에서 데이터 가져오려 하면 Deadlock 에러 남
+
+	for i := 0; i < len(people); i++ {
+		fmt.Println(<-c)
+	}
 }
 
-func isSexy(person string, c chan bool) {
-	time.Sleep(time.Second * 5)
-	c <- true // return true; go routine에 return을 받는 대신 channel을 통해 메세지를 보내는 것
+func isSexy(person string, c chan string) {
+	time.Sleep(time.Second * 10)
+	c <- person + " is sexy" // return true; go routine에 return을 받는 대신 channel을 통해 메세지를 보내는 것
 }
 
 func sexyCount(person string) {
