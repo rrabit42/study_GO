@@ -6,9 +6,9 @@ import (
 )
 
 // Go routines란 기본적으로 다른 함수와 동시에 실행시키는 함수
-//
 
 func main() {
+
 	// Top-Down 방법: 순차적으로 실행
 	// sexyCount("nico")
 	// sexyCount("flynn")
@@ -20,22 +20,40 @@ func main() {
 	// 이 경우에는 첫번째 go routine 실행하고, 두번째 go routine 실행하고 끝나게 된 것.(메인 함수는 할 일이 없음. 모두 go routine)
 	// 메인 함수는 go routine을 기다려주지 않음!!!!!! 메인 함수가 끝나면 go routine도 죽음
 	// 아래 예제가 되는 경우는 메인 함수가 flynn을 카운팅하고 있기 때문.
-	go sexyCount("nico")
-	sexyCount("flynn")
+	// go sexyCount("nico")
+	// sexyCount("flynn")
 
 	// 이렇게 해보면 쉽게 이해될 것.(프로그램이 다 실행되지 않아도 5초 지나면 프로그램 종료됨.)
-	go sexyCount("nico")
-	go sexyCount("flynn")
-	time.Sleep(time.Second * 5)
+	// go sexyCount("nico")
+	// go sexyCount("flynn")
+	// time.Sleep(time.Second * 5)
 
 	// 메인함수와 go routine이 서로 정보를 주고 받으려면 어떻게 해야할까?
 	// ex) url읆 체크하고 그 결과를 main에 보내야함.
 	// main은 (주로) 정보를 저장하는 곳이니까!
+
+	// Channel은 (goroutine-메인함수), (goroutine-다른 goroutine) 사이에 정보를 전달하기 위한 방법 -> go routine 사이 어떻게 커뮤니케이션할까에 대한 해답
+	c := make(chan bool) // 어떤 종류의 정보를 주고 받을건지 정의, main 함수 안에 있으니 main과 소통하기 위한 채널이 되겠다.
+	people := [2]string{"nico", "flynn"}
+	for _, person := range people {
+		// 값을 리턴하고 있다고 해서 아래와 같이 사용할 수는 없음
+		// result := go isSexy(person)
+		go isSexy(person, c)
+	}
+	// result := <-c    // time sleep이 없어도 main 함수가 기다림: 채널로부터 무언가를 받을 때 메인함수는 어떤 답이 올 때까지 기다림
+	fmt.Println(<-c) // 데이터 하나만 나옴, channel에는 2개 존재
+	fmt.Println(<-c) // 이렇게 쓸 수도 있다. routine 개수에 맞지 않게 channel에서 데이터 가져오려 하면 Deadlock 에러 남
+}
+
+func isSexy(person string, c chan bool) {
+	time.Sleep(time.Second * 5)
+	c <- true // return true; go routine에 return을 받는 대신 channel을 통해 메세지를 보내는 것
 }
 
 func sexyCount(person string) {
 	for i := 0; i < 10; i++ {
 		fmt.Println(person, "is sexy", i)
+		fmt.Println(person)
 		time.Sleep(time.Second)
 	}
 }
