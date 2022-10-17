@@ -2,37 +2,66 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"log"
+	"net/http"
+	"strconv"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
-// RULE OF CHANNELS & GOROUTINE
-// 1. 메인함수가 끝이나면 고루틴은 무용지물
-// 2. 채널을 통해 어떤 타입의 데이터를 주고 받을 건지 지정해줘야함.
-// 3. <- : 데이터를 받는 다는 뜻, BLOCKING OPERATION! (참고로 데이터를 받을 곳이 없어도 채널을 통해 데이터를 보낼 수는 있음.)
+var baseURL string = "https://job.incruit.com/entry/"
 
 func main() {
-	c := make(chan string)
-	people := [2]string{"nico", "flynn"}
-	for _, person := range people {
-		go isSexy(person, c)
-	}
+	totalPages := getPages()
 
-	for i := 0; i < len(people); i++ {
-		fmt.Print("waiting for ", i)
-		// go routine이 완료가 되지 않았으면 기다림; blocking operation
-		fmt.Println(<-c)
+	for i := 0; i < totalPages; i++ {
+
 	}
 }
 
-func isSexy(person string, c chan string) {
-	time.Sleep(time.Second * 10)
-	c <- person + " is sexy"
+func getPage(page int) {
+	pageURL := baseURL + "&start=" + strconv.Itoa(page*50)
+	fmt.Println("Requesting", pageURL)
 }
 
-func sexyCount(person string) {
-	for i := 0; i < 10; i++ {
-		fmt.Println(person, "is sexy", i)
-		fmt.Println(person)
-		time.Sleep(time.Second)
+// http.Get(url) 하면 403
+func getHttp(url string) *http.Response {
+	fmt.Println("[GET] Request: ", url)
+	req, rErr := http.NewRequest("GET", url, nil)
+	checkErr(rErr)
+	req.Header.Add("User-Agent", "Crawler")
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	checkErr(err)
+	checkCode(res)
+
+	return res
+}
+
+func getPages() int {
+	pages := 0
+
+	res := getHttp(baseURL)
+	defer res.Body.Close() // res.Body는 byte인데 IO임(입력과 출력) -> 따라서 이 함수가 끝나면 닫아야함, 메모리 누출 막기
+	doc, err := goquery.NewDocumentFromReader(res.Body)
+	checkErr(err)
+
+	doc.Find(".pagination").Each(func(i int, s *goquery.Selection) {
+		pages = s.Find("a").Length()
+	})
+
+	return pages
+}
+
+func checkErr(err error) {
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
+
+func checkCode(res *http.Response) {
+	if res.StatusCode != 200 {
+		log.Fatalln("Request failed with Status:", res.StatusCode)
 	}
 }
