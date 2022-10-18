@@ -9,19 +9,41 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+type extractedJob struct {
+	id       string
+	title    string
+	location string
+	salary   string
+	summary  string
+}
+
 var baseURL string = "https://job.incruit.com/entry/"
 
 func main() {
 	totalPages := getPages()
 
 	for i := 0; i < totalPages; i++ {
-
+		getPage(i)
 	}
 }
 
 func getPage(page int) {
 	pageURL := baseURL + "&start=" + strconv.Itoa(page*50)
 	fmt.Println("Requesting", pageURL)
+	res := getHttp(pageURL)
+	defer res.Body.Close() // res.Body는 byte인데 IO임(입력과 출력) -> 따라서 이 함수가 끝나면 닫아야함, 메모리 누출 막기
+	doc, err := goquery.NewDocumentFromReader(res.Body)
+	checkErr(err)
+
+	searchCards := doc.Find(".jobsearch-SerpJobCard")
+
+	searchCards.Each(func(i int, card *goquery.Selection) {
+		id, _ := card.Attr("data-jk")
+		title := card.Find(".title>a").Text()
+		location := card.Find(".sjcl").Text()
+		salary := card.Find(".salary>a").Text()
+		summary := card.Find(".summary>a").Text()
+	})
 }
 
 // http.Get(url) 하면 403
