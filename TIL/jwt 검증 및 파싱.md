@@ -17,7 +17,25 @@
 그치만 지금까지 구현한게 아까우니까 여기다가 백업을 해둔다.  
 
 ```
-accessToken := c.GetHeader("Authorization") // 사용자 정보 가져오기 위함
+func VerifyToken(tokenString string) (*jwt.Token, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		//Make sure that the token method conform to "SigningMethodHMAC"
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(os.Getenv("ACCESS_SECRET")), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return token, nil
+}
+
+...
+
+func GetTokenInfo(c *gin.Context) {
+	...
+	accessToken := c.GetHeader("Authorization") // 사용자 정보 가져오기 위함
 	// or c.Request.Cookie("access-token")
 
 	// TODO: jwt 검증(혹시 모르니?) & jwt에서 값 가져오기
@@ -49,4 +67,6 @@ accessToken := c.GetHeader("Authorization") // 사용자 정보 가져오기 위
 		fmt.Println(err)
 		return
 	}
+	...
+}
 ```
