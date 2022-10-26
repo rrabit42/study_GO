@@ -208,10 +208,17 @@ go 명령이 디폴트 참조하는 미러 서버를 구글이 운영 (proxy.gol
 go 명령이 디폴트 참조하는 첵썸 디비를 구글이 운영 (sum.golang.org)  
 관련 명령 : go get, gosumcheck, ...  
 
-> go.mod 파일과 go.sum 파일은 소스관리 대상
+> go.mod 파일과 go.sum 파일은 소스관리 대상  
+
+### 유용한 명령어  
+* ```go mod init``` : 새로운 모듈 생성, go.mod 파일을 초기화
+* ```go build, go test``` : 다른 패키지 빌딩 커맨드로써, 필요한 의존성을 go.mod에 추가한다.
+* ```go list -m all``` : 현재 모듈의 의존성을 모두 출력
+* ```go get``` : 특정 의존성의 필요한 버전으로 변경, 혹은 새로운 의존성 추가
+* ```go mod tidy``` : 사용하지 않는 의존성 삭제
 
 #### 참고  
 https://ingeec.tistory.com/106  
 https://yoongrammer.tistory.com/33  
-
+https://soyoung-new-challenge.tistory.com/130  
 
