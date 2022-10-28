@@ -33,20 +33,20 @@ return respJson, nil
 
 * Go스러운 에러처리  
 ```
-		client := &http.Client{}
-		if resp, err := client.Do(req); err != nil {
-			return err
-		} else {
-			defer resp.Body.Close()
+client := &http.Client{}
+if resp, err := client.Do(req); err != nil {
+	return err
+} else {
+	defer resp.Body.Close()
 
-			if b, err := io.ReadAll(resp.Body); err != nil {
-				return err
-			} else if err := json.Unmarshal(b, &resp); err != nil {
-				return err
-			} else {
-				return nil
-			}
-		}
+	if b, err := io.ReadAll(resp.Body); err != nil {
+		return err
+	} else if err := json.Unmarshal(b, &resp); err != nil {
+		return err
+	} else {
+		return nil
+	}
+}
 ```  
 기존 언어들은 함수가 예외를 던질지 여부를 결코 알 수 없었음. 그래서 throws나 try catch 구문을 이용해 에러를 대비했었음. 예상되는 에러의 양이 증가하면 극도로 장황한 코드로 이어지게 됨.  
 따라서 에러가 나지 않도록 함수를 짜는 것이 클린 코딩으로 권장되는 방법이었음.  
