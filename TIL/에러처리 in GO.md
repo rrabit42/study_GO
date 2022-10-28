@@ -67,6 +67,7 @@ Go에서 에러는 그저 값일 뿐임. error를 우리들의 패키지의 API�
 
 
 ## 출처  
+나(내가 현재 하고 있는 프로젝트를 하면서 느낀점)  
 https://latentis.tistory.com/m/69  
 http://cloudrain21.com/golang-graceful-error-handling  
 https://go.dev/blog/error-handling-and-go  
