@@ -1,11 +1,15 @@
 # study_GO  
-졸업프로젝트를 위한 공부😤  
+~~졸업프로젝트를 위한 공부😤~~였다고 한다  
 [노마드코더-GO 입문자](https://nomadcoders.co/go-for-beginners)  
+[한 눈에 끝내는 고랭 기초](https://edu.goorm.io/learn/lecture/2010/%ED%95%9C-%EB%88%88%EC%97%90-%EB%81%9D%EB%82%B4%EB%8A%94-%EA%B3%A0%EB%9E%AD-%EA%B8%B0%EC%B4%88)  
+
 > GO한테 반하는 중
 > 1. 파이썬보다도 빠르고 간결함(multi-core processing, 병행성)  
 > 2. return 값을 여러 개, 다른 타입으로 줄 수 있음  
 > 3. naked return, if, switch에서 변수 선언 등 파이썬보다도 직관적인 언어인듯  
-> 4. 그동안 다른 개발 언어(C, C++ 제외)에 없어서 아쉬웠던 포인터까지 탑재...
+> 4. 그동안 다른 개발 언어(C, C++ 제외)에 없어서 아쉬웠던 포인터까지 탑재...  
+
+다만 정적 언어에 강타입 언어라는게 나를 간헐적으로 화나게 만든다... 그립구나 파이썬...  
 
 ## Go 프로그래밍 언어의 특성  
 Go는 전통적인 컴파일, 링크 모델을 따르는 범용 프로그래밍 언어이다. Go는 일차적으로 시스템 프로그래밍을 위해 개발되었으며, C++, Java, Python의 장점들을 뽑아 만들어졌다. C++와 같이 Go는 컴파일러를 통해 컴파일되며, 정적 타입 (Statically Typed)의 언어이다. 또한 Java와 같이 Go는 Garbage Collection 기능을 제공한다. Go는 단순하고 간결한 프로그래밍 언어를 지향하였는데, Java의 절반에 해당하는 25개의 키워드만으로 프로그래밍이 가능하게 하였다. 마지막으로 Go의 큰 특징으로 Go는 Communicating Sequential Processes (CSP) 스타일의 Concurrent 프로그래밍을 지원한다.  
