@@ -2,19 +2,21 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/rrabit42/study_GO/blockchain"
+	"log"
+	"net/http"
 )
 
-func main() {
-	chain := blockchain.GetBlockchain()
-	chain.AddBlock("Second Block")
-	chain.AddBlock("Third Block")
-	chain.AddBlock("Fourth Block")
+const port string = ":4000"
 
-	for _, block := range chain.AllBlocks() {
-		fmt.Printf("Data: %s\n", block.Data)
-		fmt.Printf("Hash: %s\n", block.Hash)
-		fmt.Printf("Prev Hash: %s\n", block.PrevHash)
-	}
+func home(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Hello from home!") // 데이터를 Writer에 출력(Console에 출력 X)
+}
+
+func main() {
+	// go로 서버 여는 방법 너무 쉬워요~
+	http.HandleFunc("/", home)
+
+	fmt.Printf("Listening on http://localhost%s\n", port)
+	log.Fatal(http.ListenAndServe(port, nil)) // Fatal; os.Exit(1) 다음에 따라나오는 error를 Print() 하는 것과 동일, 에러가 있을 때만 실행될 것
+
 }
