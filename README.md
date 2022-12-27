@@ -1,13 +1,14 @@
 # study_GO  
-~~졸업프로젝트를 위한 공부😤~~였다고 한다  
-[노마드코더-GO 입문자](https://nomadcoders.co/go-for-beginners)  
-[한 눈에 끝내는 고랭 기초](https://edu.goorm.io/learn/lecture/2010/%ED%95%9C-%EB%88%88%EC%97%90-%EB%81%9D%EB%82%B4%EB%8A%94-%EA%B3%A0%EB%9E%AD-%EA%B8%B0%EC%B4%88)  
+~~졸업프로젝트를 위한 공부😤~~였다고 한다. 지금은 블록체인 업계에서 일하면서 필요함!  
+* [노마드코더-GO 입문자](https://nomadcoders.co/go-for-beginners)  
+* [한 눈에 끝내는 고랭 기초](https://edu.goorm.io/learn/lecture/2010/%ED%95%9C-%EB%88%88%EC%97%90-%EB%81%9D%EB%82%B4%EB%8A%94-%EA%B3%A0%EB%9E%AD-%EA%B8%B0%EC%B4%88)  
+* [노마드코인](https://nomadcoders.co/nomadcoin)  
 
 > GO한테 반하는 중
 > 1. 파이썬보다도 빠르고 간결함(multi-core processing, 병행성)  
 > 2. return 값을 여러 개, 다른 타입으로 줄 수 있음  
-> 3. naked return, if, switch에서 변수 선언 등 파이썬보다도 직관적인 언어인듯  
-> 4. 그동안 다른 개발 언어(C, C++ 제외)에 없어서 아쉬웠던 포인터까지 탑재...  
+> 3. naked return, if, switch에서 변수 선언 등 파이썬보다도 직관적인 언어인듯(쓸 수록 파이썬이 그리운걸 봐서 아닌듯ㅋㅋ)  
+> 4. 그동안 python에 없어서 아쉬웠던 포인터까지 탑재...  
 
 다만 정적 언어에 강타입 언어라는게 나를 간헐적으로 화나게 만든다... 그립구나 파이썬...  
 
