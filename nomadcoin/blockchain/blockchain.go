@@ -6,14 +6,14 @@ import (
 	"sync"
 )
 
-type block struct {
+type Block struct {
 	Data     string
 	Hash     string
 	PrevHash string
 }
 
 type blockchain struct {
-	blocks []*block // pointer들의 slice
+	blocks []*Block // pointer들의 slice
 }
 
 // Singleton 패턴: 단 하나의 instance만을 공유하는 방법
@@ -23,7 +23,7 @@ type blockchain struct {
 var b *blockchain // 소문자로 시작. -> main에서는 접근 못함. blockchain package에서만 접근 가능
 var once sync.Once
 
-func (b *block) calculateHash() {
+func (b *Block) calculateHash() {
 	hash := sha256.Sum256([]byte(b.Data + b.PrevHash)) // string도 []byte(byte slice)의 일종. for loop로 문자 하나씩 돌리면 binary이기 떄문. But string은 immutable, array는 길이가 정해져 있음. byte slice는 mutable. 따라서 sha 함수 안에서 변할 수 있는 데이터([]byte)가 필요함을 추측할 수 있음
 	b.Hash = fmt.Sprintf("%x", hash)
 }
@@ -37,8 +37,8 @@ func getLastHash() string {
 	return GetBlockchain().blocks[totalBlocks-1].Hash
 }
 
-func createBlock(data string) *block {
-	newBlock := block{data, "", getLastHash()}
+func createBlock(data string) *Block {
+	newBlock := Block{data, "", getLastHash()}
 	newBlock.calculateHash()
 	return &newBlock
 }
@@ -67,6 +67,6 @@ func GetBlockchain() *blockchain {
 // }
 
 // chain에서 AllBlocks 호출
-func (b *blockchain) AllBlocks() []*block {
+func (b *blockchain) AllBlocks() []*Block {
 	return b.blocks
 }
